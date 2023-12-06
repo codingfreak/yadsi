@@ -212,8 +212,8 @@ function Switch-FullScreen {
 }
 
 function Get-IsVirtual {
-    return ((Get-WmiObject win32_computersystem).model -eq 'VMware Virtual Platform' `
-        -or ((Get-WmiObject win32_computersystem).model -eq 'Virtual Machine'))
+    $model = (Get-WmiObject win32_computersystem).model
+    return $model.Contains('VMware') -or $model.Contains('Virtual')
 }
 
 # ----------------------------------------------
