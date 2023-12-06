@@ -312,9 +312,8 @@ if ($state -eq 0) {
     }
 }
 else {
-    #remove the previously created task
+    # remove the previously created task
     Switch-FullScreen
-    Write-Summary -Summary $summary
     $taskName = "Init Script Continuation $state"
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
 }
