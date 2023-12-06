@@ -211,6 +211,11 @@ function Switch-FullScreen {
     $wshell.SendKeys("{f11}")
 }
 
+function Get-IsVirtual {
+    return ((Get-WmiObject win32_computersystem).model -eq 'VMware Virtual Platform' `
+        -or ((Get-WmiObject win32_computersystem).model -eq 'Virtual Machine'))
+}
+
 # ----------------------------------------------
 # Main script
 # ----------------------------------------------
@@ -318,6 +323,10 @@ else {
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
 }
 
+$isVirtual = Get-IsVirtual
+if ($isVirtual) {
+    Write-Host "`nYou are running inside a virtual machine so some features might not work as expected.`n" -ForegroundColor Yellow
+}
 $totalPhases = $definition.phases.Length
 $currentPhase = 0
 foreach ($phase in $definition.phases) {
@@ -329,6 +338,10 @@ foreach ($phase in $definition.phases) {
         Write-Host "Phase $currentPhase of $totalPhases [$($phase.phaseName)] is disabled." -ForegroundColor DarkGray
         continue;
     }
+    if ($isVirtual -and $phase.disabledInVm -eq $true) {
+        Write-Host "Phase $currentPhase of $totalPhases [$($phase.phaseName)] is disabled in VM." -ForegroundColor DarkGray
+        continue;
+    }
     Write-Host "Running phase $currentPhase of $totalPhases [$($phase.phaseName)]."
     $totalSteps = $phase.steps.Length
     $currentStep = 0
@@ -336,6 +349,10 @@ foreach ($phase in $definition.phases) {
         $currentStep++
         if ($step.disabled -eq $true) {
             Write-Host "  Step $currentStep of $totalSteps [$($step.title) is disabled." -ForegroundColor DarkGray
+            continue;
+        }
+        if ($isVirtual -and $step.disabledInVm -eq $true) {
+            Write-Host "  Step $currentStep of $totalSteps [$($step.title)] is disabled in VM." -ForegroundColor DarkGray
             continue;
         }
         Write-Host -Message "  Running step $currentStep of $totalSteps [$($step.title)]..."

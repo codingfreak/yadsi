@@ -11,6 +11,7 @@
       "phaseName": "Init",
       "disabled": false,
       "reboot": true,
+      "disabledInVm": false,
       "steps": [
         {
           "title": "Setup computer",
@@ -109,6 +110,7 @@
       "phaseName": "Git Setup",
       "reboot": false,
       "disabled": false,
+      "disabledInVm": false,
       "steps": [
         {
           "title": "Git configuration",
@@ -131,6 +133,7 @@
       "phaseName": "Docker",
       "reboot": false,
       "disabled": false,
+      "disabledInVm": true,
       "steps": [
         {
           "title": "Docker Desktop",
