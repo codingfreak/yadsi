@@ -13,6 +13,14 @@ In it's technical core it is a simple PowerShell (posh) script which reads desir
 needed reboots and other complicated stuff. So instead of me sitting in front of my computer and hammering commands and then waiting for them to finish I try to
 have a single command which does everything automated until my state is reached.
 
+## Youtube Intro Cast
+
+<div align="left">
+      <a href="https://www.youtube.com/watch?v=xoLgte9LV1Q">
+         <img src="https://img.youtube.com/vi/xoLgte9LV1Q/0.jpg" style="width:50%;">
+      </a>
+</div>
+
 ## Preconditions
 
 - Fresh Windows 11 installation.
