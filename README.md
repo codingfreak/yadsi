@@ -4,6 +4,7 @@ Yet Another Desired State Implementation. Bring your dev-box to your personal wo
 
 ## Summary
 
+
 On often underestimated task for a developer is to keep control over the dev environment. In order to target this (for myself in the first place) I decided to
 try to automate this for Windows as far as possible. There are solutions to this already (PowerShell Desired State, Group Policies, Intune, ...) but all of them
 are kind of enterprise-related. This is why I wanted to use simple scripting in combination with some configuration and reliance on publicly available cost-free
