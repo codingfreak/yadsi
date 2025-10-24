@@ -115,8 +115,15 @@ function Get-IsSessionElevated {
 }
 
 function Get-RunsInTerminal {
-    $currentParentId = (Get-CimInstance -ClassName Win32_Process -Filter "ProcessId = $PID").ParentProcessId
-    return (Get-CimInstance -ClassName Win32_Process -Filter "ProcessId = $currentParentId").Name -eq "WindowsTerminal.exe"
+    $currentFatherId = (Get-CimInstance -ClassName Win32_Process -Filter "ProcessId = $PID").ParentProcessId
+    $currentGrandpaId = (Get-CimInstance -ClassName Win32_Process -Filter "ProcessId = $currentFatherId").ParentProcessId
+    if ($currentGrandpaId) {
+        $currentGrandpa = Get-CimInstance -ClassName Win32_Process -Filter "ProcessId = $($currentGrandpaId)"
+        Write-Host $currentGrandpa.Name
+        return $currentGrandpa.Name -eq "WindowsTerminal.exe"
+    }
+    $currentFather = Get-CimInstance -ClassName Win32_Process -Filter "ProcessId = $currentFatherId"
+    return $currentFather.Name -eq "WindowsTerminal.exe"
 }
 
 function Disable-Wallpaper {

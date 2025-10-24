@@ -1,177 +1,177 @@
 {
-  "title": "codingfreaks default init",
-  "disableWallpaper": true,
-  "disableSounds": true,
-  "removeKeyboardDelay": true,
-  "tryFullScreenTerminal": true,
-  "requireWindowsTerminal": true,
-  "phases": [
-    {
-      "index": 0,
-      "phaseName": "Init",
-      "disabled": false,
-      "reboot": true,
-      "disabledInVm": false,
-      "steps": [
+    "title": "codingfreaks default init",
+    "disableWallpaper": true,
+    "disableSounds": true,
+    "removeKeyboardDelay": true,
+    "tryFullScreenTerminal": true,
+    "requireWindowsTerminal": true,
+    "phases": [
         {
-          "title": "Setup computer",
-          "type": "ps",
-          "disabled": false,
-          "commands": [
-            {
-              "command": "powercfg.exe -x -monitor-timeout-ac 0;powercfg.exe -x -monitor-timeout-dc 0",
-              "title": "Disabling monitor energy timeout"
-            },
-            {
-              "command": "powercfg.exe -x -disk-timeout-ac 0;powercfg.exe -x -disk-timeout-dc 0",
-              "title": "Disabling disc energy timeout"
-            },
-            {
-              "command": "powercfg.exe -x -standby-timeout-ac 0;powercfg.exe -x -standby-timeout-dc 0",
-              "title": "Disabling standby energy timeout"
-            },
-            {
-              "command": "powercfg.exe -x -hibernate-timeout-ac 0;powercfg.exe -x -hibernate-timeout-dc 0",
-              "title": "Disabling hibernate energy timeout"
-            },
-            {
-              "command": "net stop beep | Out-Null",
-              "title": "Stopping beep service"
-            },
-            {
-              "command": "sc config beep start= disabled | Out-Null",
-              "title": "Disabling beep service"
-            }
-          ]
+            "index": 0,
+            "phaseName": "Init",
+            "disabled": false,
+            "reboot": true,
+            "disabledInVm": false,
+            "steps": [
+                {
+                    "title": "Setup computer",
+                    "type": "ps",
+                    "disabled": false,
+                    "commands": [
+                        {
+                            "command": "powercfg.exe -x -monitor-timeout-ac 0;powercfg.exe -x -monitor-timeout-dc 0",
+                            "title": "Disabling monitor energy timeout"
+                        },
+                        {
+                            "command": "powercfg.exe -x -disk-timeout-ac 0;powercfg.exe -x -disk-timeout-dc 0",
+                            "title": "Disabling disc energy timeout"
+                        },
+                        {
+                            "command": "powercfg.exe -x -standby-timeout-ac 0;powercfg.exe -x -standby-timeout-dc 0",
+                            "title": "Disabling standby energy timeout"
+                        },
+                        {
+                            "command": "powercfg.exe -x -hibernate-timeout-ac 0;powercfg.exe -x -hibernate-timeout-dc 0",
+                            "title": "Disabling hibernate energy timeout"
+                        },
+                        {
+                            "command": "net stop beep | Out-Null",
+                            "title": "Stopping beep service"
+                        },
+                        {
+                            "command": "sc config beep start=disabled | Out-Null",
+                            "title": "Disabling beep service"
+                        }
+                    ]
+                },
+                {
+                    "title": "OS baseline",
+                    "type": "choco",
+                    "disabled": false,
+                    "packages": [
+                        "git.install --params \"'/GitAndUnixToolsOnPath /WindowsTerminal /NoShellIntegration /NoOpenSSH /Editor:VisualStudioCode /NoAutoCrlf /DefaultBranchName:main'\"",
+                        "7zip",
+                        "NuGet.CommandLine",
+                        "pping"
+                    ]
+                },
+                {
+                    "title": "Browsers",
+                    "type": "choco",
+                    "disabled": false,
+                    "packages": ["googlechrome"]
+                },
+                {
+                    "title": "Fonts",
+                    "type": "choco",
+                    "disabled": false,
+                    "packages": ["jetbrainsmononf"]
+                },
+                {
+                    "title": "Editors",
+                    "type": "choco",
+                    "disabled": false,
+                    "packages": ["vscode"]
+                },
+                {
+                    "title": "WSL installation",
+                    "type": "winfeat",
+                    "disabled": false,
+                    "features": [
+                        {
+                            "name": "VirtualMachinePlatform",
+                            "title": "Virtual Machine Platform"
+                        },
+                        {
+                            "name": "Microsoft-Windows-Subsystem-Linux",
+                            "title": "Windows subsystem for Linux"
+                        }
+                    ]
+                },
+                {
+                    "title": "WSL setup",
+                    "type": "ps",
+                    "disabled": false,
+                    "commands": [
+                        {
+                            "command": "wsl --set-default-version 2",
+                            "title": "Setting WSL 2 as the default version"
+                        },
+                        {
+                            "command": "wsl --install --distribution kali-linux",
+                            "title": "Installing KALI linux in WSL"
+                        }
+                    ]
+                }
+            ]
         },
         {
-          "title": "OS baseline",
-          "type": "choco",
-          "disabled": false,
-          "packages": [
-            "git.install --params \"'/GitAndUnixToolsOnPath /WindowsTerminal /NoShellIntegration /NoOpenSSH /Editor:VisualStudioCode /NoAutoCrlf /DefaultBranchName:main'\"",
-            "7zip",
-            "NuGet.CommandLine",
-            "pping"
-          ]
+            "index": 1,
+            "phaseName": "Git Setup",
+            "reboot": false,
+            "disabled": false,
+            "disabledInVm": false,
+            "steps": [
+                {
+                    "title": "Git configuration",
+                    "type": "ps",
+                    "commands": [
+                        {
+                            "command": "git config --global user.name 'Alexander Schmidt'",
+                            "title": "Setting Git user name globally"
+                        },
+                        {
+                            "command": "git config --global user.email 'alexander.schmidt@devdeer.com'",
+                            "title": "Setting Git email globally"
+                        }
+                    ]
+                }
+            ]
         },
         {
-          "title": "Browsers",
-          "type": "choco",
-          "disabled": false,
-          "packages": ["googlechrome"]
-        },
-        {
-          "title": "Fonts",
-          "type": "choco",
-          "disabled": false,
-          "packages": ["jetbrainsmononf"]
-        },
-        {
-          "title": "Editors",
-          "type": "choco",
-          "disabled": false,
-          "packages": ["vscode"]
-        },
-        {
-          "title": "WSL installation",
-          "type": "winfeat",
-          "disabled": false,
-          "features": [
-            {
-              "name": "VirtualMachinePlatform",
-              "title": "Virtual Machine Platform"
-            },
-            {
-              "name": "Microsoft-Windows-Subsystem-Linux",
-              "title": "Windows subsystem for Linux"
-            }
-          ]
-        },
-        {
-          "title": "WSL setup",
-          "type": "ps",
-          "disabled": false,
-          "commands": [
-            {
-              "command": "wsl --set-default-version 2",
-              "title": "Setting WSL 2 as the default version"
-            },
-            {
-              "command": "wsl --install --distribution kali-linux",
-              "title": "Installing KALI linux in WSL"
-            }
-          ]
+            "index": 2,
+            "phaseName": "Docker",
+            "reboot": false,
+            "disabled": false,
+            "disabledInVm": true,
+            "steps": [
+                {
+                    "title": "Docker Desktop",
+                    "type": "choco",
+                    "disabled": false,
+                    "packages": ["docker-desktop"]
+                },
+                {
+                    "title": "Start Docker Desktop",
+                    "type": "ps",
+                    "disabled": true,
+                    "commands": [
+                        {
+                            "command": "start \"[SPECIALFOLDER:ProgramFiles]\\Docker\\Docker\\Docker Desktop.exe\"",
+                            "title": "Starting Docker Desktop"
+                        }
+                    ]
+                },
+                {
+                    "title": "Ramping up docker containers",
+                    "type": "ps",
+                    "disabled": true,
+                    "commands": [
+                        {
+                            "command": "docker run --name redis -p 6379:6379 --restart always -d redis",
+                            "title": "Starting Redis Container"
+                        },
+                        {
+                            "command": "docker run --name mssql-dev -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sql-Server-Dev' -e 'MSSQL_AGENT_ENABLED=true' -p 1433:1433 -d --restart always mcr.microsoft.com/mssql/server:2022-latest",
+                            "title": "Starting Sql Server Container"
+                        },
+                        {
+                            "command": "docker run --name azurite --restart always -p 10000:10000 -p 10001:10001 -p 10002:10002 -d mcr.microsoft.com/azure-storage/azurite",
+                            "title": "Starting Azurite Container"
+                        }
+                    ]
+                }
+            ]
         }
-      ]
-    },
-    {
-      "index": 1,
-      "phaseName": "Git Setup",
-      "reboot": false,
-      "disabled": false,
-      "disabledInVm": false,
-      "steps": [
-        {
-          "title": "Git configuration",
-          "type": "ps",
-          "commands": [
-            {
-              "command": "git config --global user.name 'Alexander Schmidt'",
-              "title": "Setting Git user name globally"
-            },
-            {
-              "command": "git config --global user.email 'alexander.schmidt@devdeer.com'",
-              "title": "Setting Git email globally"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "index": 2,
-      "phaseName": "Docker",
-      "reboot": false,
-      "disabled": false,
-      "disabledInVm": true,
-      "steps": [
-        {
-          "title": "Docker Desktop",
-          "type": "choco",
-          "disabled": false,
-          "packages": ["docker-desktop"]
-        },
-        {
-          "title": "Start Docker Desktop",
-          "type": "ps",
-          "disabled": true,
-          "commands": [
-            {
-              "command": "start \"[SPECIALFOLDER:ProgramFiles]\\Docker\\Docker\\Docker Desktop.exe\"",
-              "title": "Starting Docker Desktop"
-            }
-          ]
-        },
-        {
-          "title": "Ramping up docker containers",
-          "type": "ps",
-          "disabled": true,
-          "commands": [
-            {
-              "command": "docker run --name redis -p 6379:6379 --restart always -d redis",
-              "title": "Starting Redis Container"
-            },
-            {
-              "command": "docker run --name mssql-dev -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sql-Server-Dev' -e 'MSSQL_AGENT_ENABLED=true' -p 1433:1433 -d --restart always mcr.microsoft.com/mssql/server:2022-latest",
-              "title": "Starting Sql Server Container"
-            },
-            {
-              "command": "docker run --name azurite --restart always -p 10000:10000 -p 10001:10001 -p 10002:10002 -d mcr.microsoft.com/azure-storage/azurite",
-              "title": "Starting Azurite Container"
-            }
-          ]
-        }
-      ]
-    }
-  ]
+    ]
 }
